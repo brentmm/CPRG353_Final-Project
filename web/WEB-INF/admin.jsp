@@ -83,6 +83,46 @@
             <input type="hidden" name="userAction" value="save" action="save">
         </form>
 
+        <h2>Manage Category</h2>
+        <div>
+            <td>
+                <table>
+                    <tr>
+                        <th>Category Code</th>
+                        <th>Category Name</th>                        
+                        <th>Edit</th>
+                    </tr>
+                    <c:forEach items="${categories}" var="category">
+                        <tr>
+                            <td>${category.category_id}</td>
+                            <td>${category.category_name}</td>
+                            <td><a href="admin?action=editCat&categoryId=${category.category_id}">Edit</a><br></td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </td>
+        </div>
+
+        <h2>Add Category</h2>
+        <form method="POST">
+            <label>Category Name</label>
+            <input  class="input"type="text" name="addCatName" placeholder="Category Name" value="${addCatName}"><br>            
+            <br>
+            <input type="submit" value="Save"> 
+            <input type="hidden" name="userAction" value="addCat" action="addCat">
+        </form>
+
+        <h2>Edit Category</h2>
+        <form method="POST">
+            <label>Category ID</label>
+            <input class="input" type="email" name="editCatID" placeholder="Category ID" value="${editCatID}" readonly="" ><br>
+            <label>Category Name</label>
+            <input  class="input"type="text" name="editCatName" placeholder="Category Name" value="${editCatName}"><br>            
+            <br>
+            <input type="submit" value="Save"> 
+            <input type="hidden" name="userAction" value="saveCat" action="saveCat">
+        </form>
+
 
     </body>
 </html>

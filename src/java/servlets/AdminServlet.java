@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import models.Category;
 import models.User;
 import services.AccountService;
+import services.CategoryService;
 
 public class AdminServlet extends HttpServlet {
 
@@ -23,18 +25,31 @@ public class AdminServlet extends HttpServlet {
         String sess_username = (String) session.getAttribute("sessionUser"); //grabing session variable
 
         AccountService as = new AccountService();
+        CategoryService cs = new CategoryService();
 
         String action = request.getParameter("action");
         String email = request.getParameter("email");
 
         if (action != null) {
-            if (email.contains(" ")) {
+            if (action.equals("editCat")) {
+                String catId = request.getParameter("categoryId");
+                int int_catId = Integer.parseInt(catId);
+
+                try {
+                    Category category = cs.get(int_catId);
+                    request.setAttribute("editCatID", catId); //sets all input boxes to email users info
+                    request.setAttribute("editCatName", category.getCategory_name());
+                    List<Category> categoriesList = cs.getAll(); //reloads table from db
+                    request.setAttribute("categories", categoriesList);
+
+                } catch (Exception ex) {
+
+                }
+            } else if (email.contains(" ")) {
                 String emailArray[] = email.split(" ");
                 String emailMake = emailArray[0] + "+" + emailArray[1];
                 email = emailMake;
             }
-            
-            
 
             if (action.equals("edit")) {
                 try {
@@ -71,6 +86,9 @@ public class AdminServlet extends HttpServlet {
         try {
             List<User> usersList = as.getAll();
             request.setAttribute("users", usersList);
+
+            List<Category> categoriesList = cs.getAll(); //reloads table from db
+            request.setAttribute("categories", categoriesList);
         } catch (Exception ex) {
             Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
             request.setAttribute("message", "Loading error");
@@ -87,6 +105,7 @@ public class AdminServlet extends HttpServlet {
     throws ServletException, IOException {
 
         AccountService as = new AccountService();
+        CategoryService cs = new CategoryService();
 
         String sess_username = request.getParameter("username");
         String userAction = request.getParameter("userAction");
@@ -143,7 +162,6 @@ public class AdminServlet extends HttpServlet {
             if (userAction.equals("addUser")) {
                 try {
 
-                    String username = request.getParameter("username");
                     String password = request.getParameter("password");
                     String email = request.getParameter("email"); //retrieves values from input boxes
                     String fName = request.getParameter("fName");
@@ -177,6 +195,55 @@ public class AdminServlet extends HttpServlet {
                 } catch (Exception ex) {
 
                 }
+            } else if (userAction.equals("addCat")) {
+                String categoryName = request.getParameter("addCatName"); //retrieves values from input boxes
+
+                try {
+                    List<Category> allItems = cs.getAll();
+                    int numCats = allItems.size();
+
+                    cs.insert(numCats + 1, categoryName); //inserts user into db table
+                    List<Category> categoriesList;
+                    categoriesList = cs.getAll(); //reloads table from db
+                    request.setAttribute("categories", categoriesList);
+                    request.setAttribute("errorMsg", "Category added!");
+                } catch (Exception ex) {
+                    Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    List<Category> categoriesList;
+                    try {
+                        categoriesList = cs.getAll(); //reloads table from db
+                        request.setAttribute("categories", categoriesList);
+                        request.setAttribute("errorMsg", "Category Update Error!");
+                    } catch (Exception ex1) {
+                        Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex1);
+                    }
+
+                }
+
+            } else if (userAction.equals("saveCat")) {
+                String categoryId = request.getParameter("editCatID");
+                int int_categoryId = Integer.parseInt(categoryId);
+                String categoryName = request.getParameter("editCatName"); //retrieves values from input boxes
+
+                try {
+                    cs.update(int_categoryId, categoryName); //inserts user into db table
+                    List<Category> categoriesList;
+                    categoriesList = cs.getAll(); //reloads table from db
+                    request.setAttribute("categories", categoriesList);
+                    request.setAttribute("errorMsg", "Category Updated!");
+                } catch (Exception ex) {
+                    Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    List<Category> categoriesList;
+                    try {
+                        categoriesList = cs.getAll(); //reloads table from db
+                        request.setAttribute("categories", categoriesList);
+                        request.setAttribute("errorMsg", "Category Update Error!");
+                    } catch (Exception ex1) {
+                        Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex1);
+                    }
+
+                }
+
             }
         }
 
