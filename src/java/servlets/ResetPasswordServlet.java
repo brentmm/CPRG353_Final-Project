@@ -76,7 +76,7 @@ public class ResetPasswordServlet extends HttpServlet {
             }
 
         } else {
-            
+                        
             
             String path = getServletContext().getRealPath("/WEB-INF");
             String url = request.getRequestURL().toString();
