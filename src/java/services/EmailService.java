@@ -117,4 +117,33 @@ public class EmailService {
             return false;
         }
     }
+
+    public void altLogin(String email, String path, String url) {
+       try {
+            UserDB userDB = new UserDB();
+            User user = userDB.get(email);
+
+            String uuid = UUID.randomUUID().toString();
+            String link = url + "?uuid=" + uuid;
+
+            user.setResetPasswordUuid(uuid);
+
+            userDB.update(user);
+
+            //send mail
+            String recipient = user.getEmail();
+            String subject = "One Time Login";
+            String template = path + "/emailtemplates/altLogin.html";
+
+            HashMap<String, String> tags = new HashMap<>();
+            tags.put("firstname", user.getFirstName());
+            tags.put("lastname", user.getLastName());
+            tags.put("link", link);
+
+            GmailService.sendMail(recipient, subject, template, tags);
+
+        } catch (Exception ex) {
+
+        }
+    }
 }

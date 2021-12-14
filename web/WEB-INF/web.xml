@@ -40,6 +40,10 @@
         <servlet-name>ResetPasswordServlet</servlet-name>
         <servlet-class>servlets.ResetPasswordServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>alternateLoginServlet</servlet-name>
+        <servlet-class>servlets.AlternateLoginServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminServlet</servlet-name>
         <url-pattern>/admin</url-pattern>
@@ -59,6 +63,10 @@
     <servlet-mapping>
         <servlet-name>ResetPasswordServlet</servlet-name>
         <url-pattern>/reset</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>alternateLoginServlet</servlet-name>
+        <url-pattern>/altLogin</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -19,6 +19,9 @@
             <!--input for username-->
             <input type="text" name="username" value="${username}">
             <br>
+            <a href="altLogin">Use an one time alternate login</a>  
+            <br>
+            <br>
             <label>Password:</label>
             <!--input for password-->
             <input type="password" name="password" value="${password}">
@@ -26,11 +29,11 @@
             <!--submit button to login-->
             <input type="submit" value="Submit">               
         </form>
-            <br>
-            <a href="reset">Forgot Password</a>
-            <br>
-            <br>
-            <a href="login?register">Create an account</a>
+        <br>
+        <a href="reset">Forgot Password</a>
+        <br>
+        <br>
+        <a href="login?register">Create an account</a>
 
         <!--output box for info/error messages-->
         <p>${message}</p>
