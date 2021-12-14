@@ -27,6 +27,9 @@
             <input type="submit" value="Submit">               
         </form>
             <br>
+            <a href="reset">Forgot Password</a>
+            <br>
+            <br>
             <a href="login?register">Create an account</a>
 
         <!--output box for info/error messages-->

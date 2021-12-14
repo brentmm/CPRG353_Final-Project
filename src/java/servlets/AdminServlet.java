@@ -142,12 +142,18 @@ public class AdminServlet extends HttpServlet {
                         as.update(editEmail, isActive, password, firstName, lastName, int_role); //updates user in db
                         List<User> usersList = as.getAll(); //reloads updated table from db                        
                         request.setAttribute("users", usersList);
+                        List<Category> categoriesList;
+                        categoriesList = cs.getAll(); //reloads table from db
+                        request.setAttribute("categories", categoriesList);
                         request.setAttribute("message", "User Edited!");
                     } else {
                         request.setAttribute("message", "There was an error while saving a user.");
                         try {
                             List<User> usersList1; //if there is an error that doesnt allow an update table is reloaded
                             usersList1 = as.getAll();
+                            List<Category> categoriesList;
+                            categoriesList = cs.getAll(); //reloads table from db
+                            request.setAttribute("categories", categoriesList);
                             request.setAttribute("users", usersList1);
                         } catch (Exception ex) {
 
@@ -176,12 +182,18 @@ public class AdminServlet extends HttpServlet {
                             as.insert(email, isActive, password, fName, lName, userRole); //inserts user into db table
                             List<User> usersList = as.getAll(); //reloads updated table from db
                             request.setAttribute("users", usersList);
+                            List<Category> categoriesList;
+                            categoriesList = cs.getAll(); //reloads table from db
+                            request.setAttribute("categories", categoriesList);
                             request.setAttribute("errorMsg", "User Added!");
 
                         } catch (Exception ex) {
                             try {
                                 List<User> usersList = as.getAll(); //if there is an error that doesnt allow an insert table is reloaded
                                 request.setAttribute("users", usersList);
+                                List<Category> categoriesList;
+                                categoriesList = cs.getAll(); //reloads table from db
+                                request.setAttribute("categories", categoriesList);
                                 request.setAttribute("message", "error");
                             } catch (Exception ex1) {
 
@@ -190,6 +202,9 @@ public class AdminServlet extends HttpServlet {
                     } else {
                         List<User> usersList = as.getAll(); //if there is an error that doesnt allow an insert table is reloaded
                         request.setAttribute("users", usersList);
+                        List<Category> categoriesList;
+                        categoriesList = cs.getAll(); //reloads table from db
+                        request.setAttribute("categories", categoriesList);
                         request.setAttribute("message", "There was an error while adding a user.");
                     }
                 } catch (Exception ex) {

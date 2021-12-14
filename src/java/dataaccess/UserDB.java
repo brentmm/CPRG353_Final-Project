@@ -82,7 +82,7 @@ public class UserDB {
             ps.setBoolean(2, user.getActiveStatus());
             ps.setString(3, user.getFirstName());
             ps.setString(4, user.getLastName());
-            ps.setString(5, user.getPassword());            
+            ps.setString(5, user.getPassword());
             ps.setInt(6, user.getRole());
 
             ps.executeUpdate();
@@ -96,7 +96,7 @@ public class UserDB {
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection con = cp.getConnection();
         PreparedStatement ps = null;
-        String sql = "UPDATE user SET active=?, first_name=?, last_name=?, password=?, role=? WHERE email=?";
+        String sql = "UPDATE user SET active=?, first_name=?, last_name=?, password=?, role=?, reset_password_uuid=? WHERE email=?";
 
         try {
             ps = con.prepareStatement(sql);
@@ -105,8 +105,9 @@ public class UserDB {
             ps.setString(3, user.getLastName());
             ps.setString(4, user.getPassword());
             ps.setInt(5, user.getRole());
+            ps.setString(6, user.getResetPasswordUuid());
 
-            ps.setString(6, user.getEmail());
+            ps.setString(7, user.getEmail());
 
             ps.executeUpdate();
         } finally {
@@ -129,6 +130,36 @@ public class UserDB {
             DBUtil.closePreparedStatement(ps);
             cp.freeConnection(con);
         }
+    }
+
+    public User getByUUID(String uuid) throws Exception {
+        User user = null;
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection con = cp.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sql = "SELECT * FROM User WHERE reset_Password_Uuid=?";
+
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, uuid);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                String email = rs.getString(1);
+                Boolean active = rs.getBoolean(2);
+                String fName = rs.getString(3);
+                String lName = rs.getString(4);
+                String pass = rs.getString(5);
+                int role = rs.getInt(6);
+                user = new User(email, active, fName, lName, pass, role);
+            }
+        } finally {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            cp.freeConnection(con);
+        }
+
+        return user;
     }
 
 }

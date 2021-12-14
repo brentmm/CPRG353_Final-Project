@@ -1,12 +1,14 @@
 package models;
 
 public class User {
+
     private String email;
     private Boolean activeStatus;
     private String firstName;
     private String lastName;
     private String password;
     private int role;
+    private String resetPasswordUuid;
 
     public User() {
     }
@@ -68,5 +70,12 @@ public class User {
         this.role = role;
     }
     
-    
+    public String getResetPasswordUuid() {
+        return resetPasswordUuid;
+    }
+
+    public void setResetPasswordUuid(String resetPasswordUuid) {
+        this.resetPasswordUuid = resetPasswordUuid;
+    }
+
 }
