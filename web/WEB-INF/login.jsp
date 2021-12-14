@@ -15,11 +15,11 @@
         <h1>Home Inventory</h1>
         <h2>Login</h2>
         <form method="POST">
-            <label>Username:</label>
+            <label>Email:</label>
             <!--input for username-->
             <input type="text" name="username" value="${username}">
             <br>
-            <a href="altLogin">Use an one time alternate login</a>  
+            <a href="altLogin">Use a one time alternate login</a>  
             <br>
             <br>
             <label>Password:</label>
